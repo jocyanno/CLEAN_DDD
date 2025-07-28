@@ -2,13 +2,19 @@ import { InMemoryAnswerRepository } from "test/repositories/in-memory-answer-rep
 import { FetchQuestionAnswersUseCase } from "./fetch-question-answers";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { makeAnswer } from "test/factories/make-answer";
+import { InMemoryAnswerAttachmentRepository } from "test/repositories/in-memory-answer-attachment-repository";
 
 let inMemoryAnswerRepository: InMemoryAnswerRepository;
+let inMemoryAnswerAttachmentRepository: InMemoryAnswerAttachmentRepository;
 let sut: FetchQuestionAnswersUseCase;
 
 describe("Fetch Questions Answers", () => {
   beforeEach(() => {
-    inMemoryAnswerRepository = new InMemoryAnswerRepository();
+    inMemoryAnswerRepository = new InMemoryAnswerRepository(
+      inMemoryAnswerAttachmentRepository
+    );
+    inMemoryAnswerAttachmentRepository =
+      new InMemoryAnswerAttachmentRepository();
     sut = new FetchQuestionAnswersUseCase(inMemoryAnswerRepository);
   });
 

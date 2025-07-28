@@ -1,8 +1,13 @@
+import { QuestionAttachmentRepository } from "@/domain/forum/application/repositories/question-attachments-repository";
 import { QuestionsRepository } from "@/domain/forum/application/repositories/questions-repository";
 import { Question } from "@/domain/forum/enterprise/entities/question";
 
 export class InMemoryQuestionsRepository implements QuestionsRepository {
   public items: any[] = [];
+
+  constructor(
+    private questionAttachmentsRepository: QuestionAttachmentRepository
+  ) {}
 
   async findById(id: string) {
     const question = this.items.find((item) => item.id === id);
@@ -40,5 +45,9 @@ export class InMemoryQuestionsRepository implements QuestionsRepository {
   async delete(question: Question) {
     const index = this.items.findIndex((item) => item.id === question.id);
     this.items.splice(index, 1);
+
+    await this.questionAttachmentsRepository.deleteManyByQuestionId(
+      question.id.toString()
+    );
   }
 }
