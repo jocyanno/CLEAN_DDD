@@ -2,7 +2,7 @@ import { makeQuestion } from "test/factories/make-question";
 import { InMemoryQuestionsRepository } from "test/repositories/in-memory-questions-repository";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { EditQuestionUseCase } from "./edit-question";
-import { NotAllowedError } from "./errors/not-allowed-error";
+import { NotAllowedError } from "@/domain/forum/application/use-cases/errors/not-allowed-error";
 import { InMemoryQuestionAttachmentRepository } from "test/repositories/in-memory-question-attachment-repository";
 import { makeQuestionAttachment } from "test/factories/make-question-attachment";
 
@@ -40,7 +40,7 @@ describe("Edit Question", () => {
         questionId: new UniqueEntityID("question-1"),
         attachmentId: new UniqueEntityID("2")
       })
-    )
+    );
 
     await sut.execute({
       authorId: "author-1",

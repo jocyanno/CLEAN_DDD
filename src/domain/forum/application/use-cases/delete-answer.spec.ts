@@ -2,7 +2,7 @@ import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { DeleteAnswerUseCase } from "./delete-answer";
 import { InMemoryAnswerRepository } from "test/repositories/in-memory-answer-repository";
 import { makeAnswer } from "test/factories/make-answer";
-import { NotAllowedError } from "./errors/not-allowed-error";
+import { NotAllowedError } from "@/domain/forum/application/use-cases/errors/not-allowed-error";
 import { InMemoryAnswerAttachmentRepository } from "test/repositories/in-memory-answer-attachment-repository";
 import { makeAnswerAttachment } from "test/factories/make-answer-attachment";
 
@@ -12,7 +12,8 @@ let sut: DeleteAnswerUseCase;
 
 describe("Delete Answer", () => {
   beforeEach(() => {
-    inMemoryAnswerAttachmentRepository = new InMemoryAnswerAttachmentRepository();
+    inMemoryAnswerAttachmentRepository =
+      new InMemoryAnswerAttachmentRepository();
     inMemoryAnswersRepository = new InMemoryAnswerRepository(
       inMemoryAnswerAttachmentRepository
     );

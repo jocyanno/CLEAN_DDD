@@ -1,8 +1,8 @@
 import { Either, left, right } from "@/core/either";
 import { Question } from "../../enterprise/entities/question";
 import { QuestionsRepository } from "../repositories/questions-repository";
-import { NotAllowedError } from "./errors/not-allowed-error";
-import { ResourceNotFoundError } from "./errors/resource-not-found-error";
+import { NotAllowedError } from "@/domain/forum/application/use-cases/errors/not-allowed-error";
+import { ResourceNotFoundError } from "@/domain/forum/application/use-cases/errors/resource-not-found-error";
 import { QuestionAttachmentRepository } from "../repositories/question-attachments-repository";
 import { QuestionAttachmentList } from "../../enterprise/entities/question-attachment-list";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
@@ -19,7 +19,7 @@ interface EditQuestionUseCaseRequest {
 type EditQuestionUseCaseResponse = Either<
   ResourceNotFoundError | NotAllowedError,
   {
-    question: Question
+    question: Question;
   }
 >;
 
@@ -46,9 +46,12 @@ export class EditQuestionUseCase {
       return left(new NotAllowedError());
     }
 
-    const currentQuestionAttachments = await this.questionAttachmentsRepository.findManyByQuestionId(questionId);
+    const currentQuestionAttachments =
+      await this.questionAttachmentsRepository.findManyByQuestionId(questionId);
 
-    const questionAttachmentList = new QuestionAttachmentList(currentQuestionAttachments);
+    const questionAttachmentList = new QuestionAttachmentList(
+      currentQuestionAttachments
+    );
 
     const questionAttachments = attachmentsIds.map((attachmentId) => {
       return QuestionAttachment.create({
@@ -66,7 +69,7 @@ export class EditQuestionUseCase {
     await this.questionsRepository.save(question);
 
     return right({
-      question,
+      question
     });
   }
 }
